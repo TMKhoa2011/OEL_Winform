@@ -43,6 +43,8 @@ namespace OEL_PMUD
 
                     dataGridView1.DataSource = topics;
 
+                    if (dataGridView1.Columns["ID"] != null)
+                        dataGridView1.Columns["ID"].Visible = true; // Đã sửa dòng này chuẩn cú pháp C#
                     if (dataGridView1.Columns["TopicName"] != null)
                         dataGridView1.Columns["TopicName"].HeaderText = "Topic Name";
                     if (dataGridView1.Columns["Description"] != null)
@@ -50,7 +52,7 @@ namespace OEL_PMUD
                     if (dataGridView1.Columns["CreatedAt"] != null)
                         dataGridView1.Columns["CreatedAt"].HeaderText = "Created At";
 
-                    // Tự động dàn đều các cột lấp đầy toàn bộ khung bảng (Cách 2)
+                    // Tự động dàn đều các cột lấp đầy toàn bộ khung bảng
                     dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 }
             }
@@ -204,18 +206,16 @@ namespace OEL_PMUD
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtTopicname.Text))
-            {
-                MessageBox.Show("Please enter the topic name!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            // Kiểm tra bắt lỗi (trống và trùng tên) trước khi thêm
+            if (!IsValidInput()) return;
 
-            bool success = AddTopic(txtTopicname.Text, txtDescription.Text);
+            bool success = AddTopic(txtTopicname.Text.Trim(), txtDescription.Text.Trim());
             if (success)
             {
                 MessageBox.Show("Topic added successfully!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 txtTopicname.Clear();
                 txtDescription.Clear();
+                txtTopicname.Focus();
             }
         }
 
@@ -227,18 +227,18 @@ namespace OEL_PMUD
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(txtTopicname.Text))
-            {
-                MessageBox.Show("Topic name cannot be empty!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
             int id = Convert.ToInt32(dataGridView1.CurrentRow.Cells["ID"].Value);
 
-            bool success = UpdateTopic(id, txtTopicname.Text, txtDescription.Text);
+            // Kiểm tra bắt lỗi (trống và trùng tên với id hiện tại) trước khi cập nhật
+            if (!IsValidInput(id)) return;
+
+            bool success = UpdateTopic(id, txtTopicname.Text.Trim(), txtDescription.Text.Trim());
             if (success)
             {
                 MessageBox.Show("Topic updated successfully!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtTopicname.Clear();
+                txtDescription.Clear();
+                txtTopicname.Focus();
             }
         }
 
@@ -260,8 +260,79 @@ namespace OEL_PMUD
                     MessageBox.Show("Topic deleted successfully!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     txtTopicname.Clear();
                     txtDescription.Clear();
+                    txtTopicname.Focus();
                 }
             }
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            txtTopicname.Clear();
+            txtDescription.Clear();
+            txtSearch.Clear();
+
+            dataGridView1.ClearSelection();
+            txtTopicname.Focus();
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            string keyword = txtSearch.Text.Trim().ToLower();
+
+            using (var context = new Appdbcontext())
+            {
+                var filteredList = context.Topics
+                    .Where(t => t.Name.ToLower().Contains(keyword) ||
+                                (t.Description != null && t.Description.ToLower().Contains(keyword)))
+                    .Select(t => new
+                    {
+                        ID = t.Id,
+                        TopicName = t.Name,
+                        Description = t.Description,
+                        CreatedAt = t.Createdat
+                    })
+                    .ToList();
+
+                dataGridView1.DataSource = filteredList;
+            }
+        }
+
+        private void txtTopicname_TextChanged(object sender, EventArgs e)
+        {
+            // Để trống hoặc viết logic tùy chỉnh nếu cần thiết
+        }
+
+        #endregion
+
+        #region 5. HÀM KIỂM TRA HỢP LỆ DỮ LIỆU (VALIDATION)
+
+        private bool IsValidInput(int currentTopicId = 0)
+        {
+            string topicName = txtTopicname.Text.Trim();
+
+            // 1. Kiểm tra không được để trống tên chủ đề
+            if (string.IsNullOrEmpty(topicName))
+            {
+                MessageBox.Show("Vui lòng nhập tên chủ đề!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTopicname.Focus();
+                return false;
+            }
+
+            // 2. Kiểm tra không được trùng tên trong CSDL
+            using (var context = new Appdbcontext())
+            {
+                // Kiểm tra xem tên đã tồn tại chưa (nếu đang Sửa thì loại trừ ID hiện tại ra)
+                bool isDuplicate = context.Topics.Any(t => t.Name.ToLower() == topicName.ToLower() && t.Id != currentTopicId);
+
+                if (isDuplicate)
+                {
+                    MessageBox.Show("Tên chủ đề này đã tồn tại, vui lòng nhập tên khác!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtTopicname.Focus();
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         #endregion

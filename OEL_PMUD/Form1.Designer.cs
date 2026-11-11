@@ -36,6 +36,9 @@
             btnAdd = new Button();
             btnDelete = new Button();
             btnUpdate = new Button();
+            lblSearch = new Label();
+            txtSearch = new TextBox();
+            btnClear = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -74,8 +77,9 @@
             txtTopicname.Font = new Font("Segoe UI", 12F);
             txtTopicname.Location = new Point(133, 35);
             txtTopicname.Name = "txtTopicname";
-            txtTopicname.Size = new Size(466, 34);
+            txtTopicname.Size = new Size(348, 34);
             txtTopicname.TabIndex = 3;
+            txtTopicname.TextChanged += txtTopicname_TextChanged;
             // 
             // txtDescription
             // 
@@ -83,13 +87,13 @@
             txtDescription.Location = new Point(133, 85);
             txtDescription.Multiline = true;
             txtDescription.Name = "txtDescription";
-            txtDescription.Size = new Size(466, 27);
+            txtDescription.Size = new Size(348, 27);
             txtDescription.TabIndex = 4;
             // 
             // btnAdd
             // 
             btnAdd.Font = new Font("Segoe UI", 12F);
-            btnAdd.Location = new Point(77, 509);
+            btnAdd.Location = new Point(12, 509);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(118, 52);
             btnAdd.TabIndex = 5;
@@ -100,7 +104,7 @@
             // btnDelete
             // 
             btnDelete.Font = new Font("Segoe UI", 12F);
-            btnDelete.Location = new Point(235, 509);
+            btnDelete.Location = new Point(154, 509);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(122, 52);
             btnDelete.TabIndex = 6;
@@ -111,7 +115,7 @@
             // btnUpdate
             // 
             btnUpdate.Font = new Font("Segoe UI", 12F);
-            btnUpdate.Location = new Point(402, 509);
+            btnUpdate.Location = new Point(303, 509);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(117, 52);
             btnUpdate.TabIndex = 7;
@@ -119,11 +123,44 @@
             btnUpdate.UseVisualStyleBackColor = true;
             btnUpdate.Click += btnUpdate_Click;
             // 
+            // lblSearch
+            // 
+            lblSearch.AutoSize = true;
+            lblSearch.Font = new Font("Segoe UI", 12F);
+            lblSearch.Location = new Point(503, 84);
+            lblSearch.Name = "lblSearch";
+            lblSearch.Size = new Size(70, 28);
+            lblSearch.TabIndex = 8;
+            lblSearch.Text = "Search";
+            // 
+            // txtSearch
+            // 
+            txtSearch.Font = new Font("Segoe UI", 12F);
+            txtSearch.Location = new Point(579, 82);
+            txtSearch.Name = "txtSearch";
+            txtSearch.Size = new Size(301, 34);
+            txtSearch.TabIndex = 9;
+            txtSearch.TextChanged += txtSearch_TextChanged;
+            // 
+            // btnClear
+            // 
+            btnClear.Font = new Font("Segoe UI", 12F);
+            btnClear.Location = new Point(448, 509);
+            btnClear.Name = "btnClear";
+            btnClear.Size = new Size(125, 52);
+            btnClear.TabIndex = 10;
+            btnClear.Text = "Clear";
+            btnClear.UseVisualStyleBackColor = true;
+            btnClear.Click += btnClear_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 19F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(892, 584);
+            Controls.Add(btnClear);
+            Controls.Add(txtSearch);
+            Controls.Add(lblSearch);
             Controls.Add(btnUpdate);
             Controls.Add(btnDelete);
             Controls.Add(btnAdd);
@@ -151,5 +188,8 @@
         private Button btnAdd;
         private Button btnDelete;
         private Button btnUpdate;
+        private Label lblSearch;
+        private TextBox txtSearch;
+        private Button btnClear;
     }
 }
