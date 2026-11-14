@@ -39,6 +39,7 @@
             lblSearch = new Label();
             txtSearch = new TextBox();
             btnClear = new Button();
+            btnManagequestions = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -87,7 +88,7 @@
             txtDescription.Location = new Point(133, 85);
             txtDescription.Multiline = true;
             txtDescription.Name = "txtDescription";
-            txtDescription.Size = new Size(348, 27);
+            txtDescription.Size = new Size(348, 31);
             txtDescription.TabIndex = 4;
             // 
             // btnAdd
@@ -153,11 +154,23 @@
             btnClear.UseVisualStyleBackColor = true;
             btnClear.Click += btnClear_Click;
             // 
+            // btnManagequestions
+            // 
+            btnManagequestions.Font = new Font("Segoe UI", 12F);
+            btnManagequestions.Location = new Point(656, 509);
+            btnManagequestions.Name = "btnManagequestions";
+            btnManagequestions.Size = new Size(224, 52);
+            btnManagequestions.TabIndex = 11;
+            btnManagequestions.Text = "Manage Questions";
+            btnManagequestions.UseVisualStyleBackColor = true;
+            btnManagequestions.Click += btnManagequestions_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 19F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(892, 584);
+            Controls.Add(btnManagequestions);
             Controls.Add(btnClear);
             Controls.Add(txtSearch);
             Controls.Add(lblSearch);
@@ -191,5 +204,6 @@
         private Label lblSearch;
         private TextBox txtSearch;
         private Button btnClear;
+        private Button btnManagequestions;
     }
 }

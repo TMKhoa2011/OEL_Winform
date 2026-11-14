@@ -336,5 +336,11 @@ namespace OEL_PMUD
         }
 
         #endregion
+
+        private void btnManagequestions_Click(object sender, EventArgs e)
+        {
+            FormQuestion fq = new FormQuestion();
+            fq.Show(); 
+        }
     }
 }
