@@ -43,6 +43,8 @@
             btnUpdate = new Button();
             btnDelete = new Button();
             btnClear = new Button();
+            btnManageoptions = new Button();
+            btnBack = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -128,6 +130,7 @@
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.Size = new Size(726, 337);
             dataGridView1.TabIndex = 8;
+            dataGridView1.CellClick += dataGridView1_CellClick;
             // 
             // lblSearch
             // 
@@ -146,13 +149,14 @@
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(333, 30);
             txtSearch.TabIndex = 10;
+            txtSearch.TextChanged += txtSearch_TextChanged;
             // 
             // btnAdd
             // 
             btnAdd.Font = new Font("Segoe UI", 10F);
             btnAdd.Location = new Point(744, 222);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(94, 53);
+            btnAdd.Size = new Size(94, 38);
             btnAdd.TabIndex = 11;
             btnAdd.Text = "Add";
             btnAdd.UseVisualStyleBackColor = true;
@@ -161,9 +165,9 @@
             // btnUpdate
             // 
             btnUpdate.Font = new Font("Segoe UI", 10F);
-            btnUpdate.Location = new Point(744, 313);
+            btnUpdate.Location = new Point(744, 266);
             btnUpdate.Name = "btnUpdate";
-            btnUpdate.Size = new Size(94, 55);
+            btnUpdate.Size = new Size(94, 41);
             btnUpdate.TabIndex = 12;
             btnUpdate.Text = "Update";
             btnUpdate.UseVisualStyleBackColor = true;
@@ -172,9 +176,9 @@
             // btnDelete
             // 
             btnDelete.Font = new Font("Segoe UI", 10F);
-            btnDelete.Location = new Point(744, 408);
+            btnDelete.Location = new Point(744, 313);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(94, 53);
+            btnDelete.Size = new Size(94, 42);
             btnDelete.TabIndex = 13;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = true;
@@ -183,19 +187,42 @@
             // btnClear
             // 
             btnClear.Font = new Font("Segoe UI", 10F);
-            btnClear.Location = new Point(744, 508);
+            btnClear.Location = new Point(744, 361);
             btnClear.Name = "btnClear";
-            btnClear.Size = new Size(94, 51);
+            btnClear.Size = new Size(94, 40);
             btnClear.TabIndex = 14;
             btnClear.Text = "Clear";
             btnClear.UseVisualStyleBackColor = true;
             btnClear.Click += btnClear_Click;
+            // 
+            // btnManageoptions
+            // 
+            btnManageoptions.Font = new Font("Segoe UI", 10F);
+            btnManageoptions.Location = new Point(744, 407);
+            btnManageoptions.Name = "btnManageoptions";
+            btnManageoptions.Size = new Size(94, 117);
+            btnManageoptions.TabIndex = 15;
+            btnManageoptions.Text = "Manage Options";
+            btnManageoptions.UseVisualStyleBackColor = true;
+            btnManageoptions.Click += btnManageoptions_Click;
+            // 
+            // btnBack
+            // 
+            btnBack.Location = new Point(744, 530);
+            btnBack.Name = "btnBack";
+            btnBack.Size = new Size(94, 29);
+            btnBack.TabIndex = 16;
+            btnBack.Text = "Back";
+            btnBack.UseVisualStyleBackColor = true;
+            btnBack.Click += btnBack_Click;
             // 
             // FormQuestion
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(850, 571);
+            Controls.Add(btnBack);
+            Controls.Add(btnManageoptions);
             Controls.Add(btnClear);
             Controls.Add(btnDelete);
             Controls.Add(btnUpdate);
@@ -235,5 +262,7 @@
         private Button btnUpdate;
         private Button btnDelete;
         private Button btnClear;
+        private Button btnManageoptions;
+        private Button btnBack;
     }
 }

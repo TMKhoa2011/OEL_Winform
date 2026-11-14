@@ -94,7 +94,6 @@ namespace OEL_PMUD
             {
                 using (var db = new Appdbcontext())
                 {
-                    // Kiểm tra nếu bảng Questions chưa có dữ liệu và đã có sẵn Topics trong DB
                     if (!db.Questions.Any() && db.Topics.Any())
                     {
                         var topics = db.Topics.OrderBy(t => t.Id).ToList();
@@ -230,7 +229,7 @@ namespace OEL_PMUD
                         }
 
                         db.Questions.AddRange(sampleQuestions);
-                        db.SaveChanges(); // Lưu thẳng xuống SQL Server
+                        db.SaveChanges();
                     }
                 }
             }
@@ -426,14 +425,29 @@ namespace OEL_PMUD
                         .ToList();
 
                     dataGridView1.DataSource = filtered;
+
+                    // Ẩn các cột ID cho gọn giao diện
+                    if (dataGridView1.Columns["ID"] != null) dataGridView1.Columns["ID"].Visible = false;
+                    if (dataGridView1.Columns["TopicId"] != null) dataGridView1.Columns["TopicId"].Visible = false;
                 }
             }
             catch (Exception ex)
             {
-                // Handle search error if needed
+                MessageBox.Show("Error searching: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         #endregion
+
+        private void btnManageoptions_Click(object sender, EventArgs e)
+        {
+            FormOption frm = new FormOption();
+            frm.ShowDialog();
+        }
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            this.Close(); 
+        }
     }
 }
