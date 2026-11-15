@@ -60,6 +60,7 @@
             cbSelectquestion.Name = "cbSelectquestion";
             cbSelectquestion.Size = new Size(583, 31);
             cbSelectquestion.TabIndex = 1;
+            cbSelectquestion.SelectedIndexChanged += cbSelectquestion_SelectedIndexChanged;
             // 
             // dgvOptions
             // 
@@ -69,6 +70,7 @@
             dgvOptions.RowHeadersWidth = 51;
             dgvOptions.Size = new Size(716, 334);
             dgvOptions.TabIndex = 2;
+            dgvOptions.CellClick += dgvOptions_CellClick;
             // 
             // lblOptiontext
             // 
@@ -107,35 +109,39 @@
             btnAdd.TabIndex = 6;
             btnAdd.Text = "Add";
             btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Click += btnAdd_Click;
             // 
             // btnDelete
             // 
             btnDelete.Font = new Font("Segoe UI", 10F);
-            btnDelete.Location = new Point(770, 290);
+            btnDelete.Location = new Point(770, 266);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(111, 53);
+            btnDelete.Size = new Size(111, 43);
             btnDelete.TabIndex = 7;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
             // 
             // btnUpdate
             // 
             btnUpdate.Font = new Font("Segoe UI", 10F);
-            btnUpdate.Location = new Point(770, 230);
+            btnUpdate.Location = new Point(770, 218);
             btnUpdate.Name = "btnUpdate";
-            btnUpdate.Size = new Size(111, 54);
+            btnUpdate.Size = new Size(111, 42);
             btnUpdate.TabIndex = 8;
             btnUpdate.Text = "Update";
             btnUpdate.UseVisualStyleBackColor = true;
+            btnUpdate.Click += btnUpdate_Click;
             // 
             // btnClear
             // 
-            btnClear.Location = new Point(770, 349);
+            btnClear.Location = new Point(770, 315);
             btnClear.Name = "btnClear";
-            btnClear.Size = new Size(111, 50);
+            btnClear.Size = new Size(111, 42);
             btnClear.TabIndex = 9;
             btnClear.Text = "Clear";
             btnClear.UseVisualStyleBackColor = true;
+            btnClear.Click += btnClear_Click;
             // 
             // btnBack
             // 

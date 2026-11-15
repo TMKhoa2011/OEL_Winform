@@ -57,6 +57,14 @@ namespace OEL_PMUD
                 if (int.TryParse(cbSelectquestion.SelectedValue.ToString(), out int questionId))
                 {
                     LoadOptionsForQuestion(questionId);
+
+                    // Hiển thị loại câu hỏi để giáo viên dễ nhận biết và nhập đáp án cho đúng
+                    var selectedQ = cbSelectquestion.SelectedItem as Question;
+                    if (selectedQ != null)
+                    {
+                        string qType = selectedQ.Questiontype ?? "Multiple Choice";
+                        // Bạn có thể gán vào một Label trên form (ví dụ lblQuestionType.Text = "Type: " + qType;)
+                    }
                 }
             }
         }

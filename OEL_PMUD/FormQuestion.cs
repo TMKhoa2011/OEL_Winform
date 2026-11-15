@@ -14,10 +14,13 @@ namespace OEL_PMUD
         {
             InitializeComponent();
 
-            // Tự động thêm 80 câu hỏi mẫu (10 câu/chủ đề) vào SQL Server nếu bảng đang trống
+            // 1. Tự động thêm 80 câu hỏi mẫu (10 câu/chủ đề) với phân loại chuẩn xác vào SQL Server nếu bảng đang trống
             SeedQuestionsIfEmpty();
 
-            // Load initial data
+            // 2. Tự động sinh đáp án mẫu tương ứng dựa trên QuestionType nếu bảng Options đang trống
+            SeedOptionsIfEmpty();
+
+            // 3. Load initial data
             LoadTopicComboBox();
             LoadQuestionData();
         }
@@ -86,7 +89,7 @@ namespace OEL_PMUD
 
         #endregion
 
-        #region 2. SEED 80 QUESTIONS INTO SQL SERVER AUTOMATICALLY
+        #region 2. SEED 80 QUESTIONS & OPTIONS AUTOMATICALLY (STRUCTURED TYPES)
 
         private void SeedQuestionsIfEmpty()
         {
@@ -100,128 +103,127 @@ namespace OEL_PMUD
                         var random = new Random();
                         var sampleQuestions = new List<Question>();
 
-                        string[] types = { "Multiple Choice", "True/False", "Fill in the blank" };
-
-                        string[][] topicQuestionPools = new string[][]
+                        // Định nghĩa danh sách câu hỏi kèm theo QuestionType chuẩn xác cho từng chủ đề (8 chủ đề x 10 câu = 80 câu)
+                        var topicQuestionPools = new[]
                         {
                             // 1. Travel and Tourism
-                            new string[] {
-                                "What document is mandatory for international air travel?",
-                                "Which term describes traveling to natural areas with conservation efforts?",
-                                "What does 'all-inclusive resort' usually mean?",
-                                "Which booking platform is commonly used for hotel reservations?",
-                                "What is the primary function of a travel itinerary?",
-                                "What does 'jet lag' refer to after a long flight?",
-                                "Which term describes a short trip for pleasure or education?",
-                                "What is a boarding pass used for at the airport?",
-                                "What does 'customs declaration' involve when entering a country?",
-                                "Which luggage type is permitted as cabin baggage on most flights?"
+                            new[] {
+                                Tuple.Create("What document is mandatory for international air travel?", "Fill in the blank"),
+                                Tuple.Create("Which term describes traveling to natural areas with conservation efforts?", "Multiple Choice"),
+                                Tuple.Create("What does 'all-inclusive resort' usually mean?", "Multiple Choice"),
+                                Tuple.Create("Which booking platform is commonly used for hotel reservations?", "Multiple Choice"),
+                                Tuple.Create("International flights do not require a passport.", "True/False"),
+                                Tuple.Create("What does 'jet lag' refer to after a long flight?", "Fill in the blank"),
+                                Tuple.Create("Which term describes a short trip for pleasure or education?", "Multiple Choice"),
+                                Tuple.Create("A boarding pass is required to pass airport security and board the plane.", "True/False"),
+                                Tuple.Create("What does 'customs declaration' involve when entering a country?", "Fill in the blank"),
+                                Tuple.Create("Which luggage type is permitted as cabin baggage on most flights?", "Multiple Choice")
                             },
                             // 2. Education and School Life
-                            new string[] {
-                                "What is the main objective of a final-year academic project?",
-                                "Which facility on campus is primarily used for research and reading?",
-                                "What does GPA stand for in the academic grading system?",
-                                "How do students usually submit their assignments digitally?",
-                                "What is the role of an academic advisor in university?",
-                                "Which exam assesses English proficiency for international communication?",
-                                "What is a syllabus designed to outline for a course?",
-                                "Why is collaborative teamwork important in university projects?",
-                                "What does plagiarism mean in academic writing?",
-                                "What is the purpose of a university lecture?"
+                            new[] {
+                                Tuple.Create("What is the main objective of a final-year academic project?", "Fill in the blank"),
+                                Tuple.Create("Which facility on campus is primarily used for research and reading?", "Multiple Choice"),
+                                Tuple.Create("What does GPA stand for in the academic grading system?", "Fill in the blank"),
+                                Tuple.Create("How do students usually submit their assignments digitally?", "Fill in the blank"),
+                                Tuple.Create("An academic advisor helps students plan their course schedules.", "True/False"),
+                                Tuple.Create("Which exam assesses English proficiency for international communication?", "Multiple Choice"),
+                                Tuple.Create("What is a syllabus designed to outline for a course?", "Fill in the blank"),
+                                Tuple.Create("Collaborative teamwork is discouraged in university projects.", "True/False"),
+                                Tuple.Create("What does plagiarism mean in academic writing?", "Fill in the blank"),
+                                Tuple.Create("What is the purpose of a university lecture?", "Fill in the blank")
                             },
                             // 3. Workspace and Business
-                            new string[] {
-                                "What is the primary purpose of a corporate meeting agenda?",
-                                "Which department manages employee payroll and benefits?",
-                                "What does the acronym ROI stand for in business investments?",
-                                "How should a formal resignation letter be submitted?",
-                                "What is the main goal of a marketing strategy?",
-                                "What does B2B stand for in commercial transactions?",
-                                "Why are Key Performance Indicators (KPIs) used in companies?",
-                                "What is a supply chain in corporate operations?",
-                                "How do you write a professional follow-up email after an interview?",
-                                "What is the difference between revenue and net profit?"
+                            new[] {
+                                Tuple.Create("What is the primary purpose of a corporate meeting agenda?", "Fill in the blank"),
+                                Tuple.Create("Which department manages employee payroll and benefits?", "Multiple Choice"),
+                                Tuple.Create("What does the acronym ROI stand for in business investments?", "Fill in the blank"),
+                                Tuple.Create("A formal resignation letter should never be submitted in writing.", "True/False"),
+                                Tuple.Create("What is the main goal of a marketing strategy?", "Fill in the blank"),
+                                Tuple.Create("What does B2B stand for in commercial transactions?", "Fill in the blank"),
+                                Tuple.Create("Key Performance Indicators (KPIs) are used to measure company performance.", "True/False"),
+                                Tuple.Create("What is a supply chain in corporate operations?", "Fill in the blank"),
+                                Tuple.Create("How do you write a professional follow-up email after an interview?", "Fill in the blank"),
+                                Tuple.Create("What is the difference between revenue and net profit?", "Multiple Choice")
                             },
                             // 4. Daily Life and Hobbies
-                            new string[] {
-                                "What are the health benefits of maintaining a daily morning routine?",
-                                "Which hobby is known for enhancing creativity and manual dexterity?",
-                                "How many hours of sleep are recommended for adults nightly?",
-                                "What is the advantage of practicing mindfulness or meditation?",
-                                "Which physical activity is best for cardiovascular endurance?",
-                                "How does time management reduce daily stress?",
-                                "What is a popular leisure activity for relaxing on weekends?",
-                                "Why is balanced nutrition essential for daily energy?",
-                                "How can reading books daily improve cognitive function?",
-                                "What is the benefit of keeping a personal journal?"
+                            new[] {
+                                Tuple.Create("What are the health benefits of maintaining a daily morning routine?", "Fill in the blank"),
+                                Tuple.Create("Which hobby is known for enhancing creativity and manual dexterity?", "Multiple Choice"),
+                                Tuple.Create("Adults are generally recommended to get 7 to 9 hours of sleep nightly.", "True/False"),
+                                Tuple.Create("What is the advantage of practicing mindfulness or meditation?", "Fill in the blank"),
+                                Tuple.Create("Which physical activity is best for cardiovascular endurance?", "Multiple Choice"),
+                                Tuple.Create("Time management helps increase daily stress levels.", "True/False"),
+                                Tuple.Create("What is a popular leisure activity for relaxing on weekends?", "Multiple Choice"),
+                                Tuple.Create("Balanced nutrition is essential for maintaining daily energy.", "True/False"),
+                                Tuple.Create("How can reading books daily improve cognitive function?", "Fill in the blank"),
+                                Tuple.Create("What is the benefit of keeping a personal journal?", "Fill in the blank")
                             },
                             // 5. Technology and Media
-                            new string[] {
-                                "What is the main benefit of cloud computing for enterprises?",
-                                "Which programming language is widely used for Android app development?",
-                                "What does DBMS stand for in software database management?",
-                                "How does version control (like Git) help developers?",
-                                "What is the primary function of an operating system?",
-                                "Which cyber threat involves tricking users into revealing passwords?",
-                                "What does API stand for in software engineering?",
-                                "Why is responsive design important for web applications?",
-                                "What is the difference between front-end and back-end development?",
-                                "What is the role of a database foreign key constraint?"
+                            new[] {
+                                Tuple.Create("What is the main benefit of cloud computing for enterprises?", "Fill in the blank"),
+                                Tuple.Create("Which programming language is widely used for Android app development?", "Multiple Choice"),
+                                Tuple.Create("What does DBMS stand for in software database management?", "Fill in the blank"),
+                                Tuple.Create("Version control systems like Git help developers track code changes.", "True/False"),
+                                Tuple.Create("What is the primary function of an operating system?", "Fill in the blank"),
+                                Tuple.Create("Phishing is a cyber threat that involves tricking users into revealing passwords.", "True/False"),
+                                Tuple.Create("What does API stand for in software engineering?", "Fill in the blank"),
+                                Tuple.Create("Responsive design is unimportant for modern web applications.", "True/False"),
+                                Tuple.Create("What is the difference between front-end and back-end development?", "Multiple Choice"),
+                                Tuple.Create("What is the role of a database foreign key constraint?", "Fill in the blank")
                             },
                             // 6. Health and Fitness
-                            new string[] {
-                                "Why is regular hydration crucial during high-intensity workouts?",
-                                "What is the primary goal of strength training exercises?",
-                                "Which food group is the primary source of sustained energy?",
-                                "How does aerobic exercise impact heart health?",
-                                "What is the purpose of stretching before a workout session?",
-                                "Why is adequate rest important for muscle recovery?",
-                                "What does BMI stand for in health assessments?",
-                                "Which nutrient is essential for repairing body tissues?",
-                                "How does chronic stress negatively affect physical health?",
-                                "What are the benefits of eating green vegetables daily?"
+                            new[] {
+                                Tuple.Create("Regular hydration is crucial during high-intensity workouts.", "True/False"),
+                                Tuple.Create("What is the primary goal of strength training exercises?", "Fill in the blank"),
+                                Tuple.Create("Which food group is the primary source of sustained energy?", "Multiple Choice"),
+                                Tuple.Create("Aerobic exercise has a negative impact on heart health.", "True/False"),
+                                Tuple.Create("What is the purpose of stretching before a workout session?", "Fill in the blank"),
+                                Tuple.Create("Adequate rest is important for muscle recovery after exercise.", "True/False"),
+                                Tuple.Create("What does BMI stand for in health assessments?", "Fill in the blank"),
+                                Tuple.Create("Which nutrient is essential for repairing body tissues?", "Multiple Choice"),
+                                Tuple.Create("Chronic stress can negatively affect physical health.", "True/False"),
+                                Tuple.Create("What are the benefits of eating green vegetables daily?", "Fill in the blank")
                             },
                             // 7. Environment and Nature
-                            new string[] {
-                                "Why is plastic recycling vital for marine ecosystems?",
-                                "Which renewable energy source harnesses power from wind?",
-                                "What causes global climate change according to scientists?",
-                                "What is the significance of preserving endangered wildlife species?",
-                                "How do trees contribute to reducing atmospheric carbon dioxide?",
-                                "What does sustainable development mean for future generations?",
-                                "Which practice helps conserve water resources at home?",
-                                "What is the impact of deforestation on natural habitats?",
-                                "Why are solar panels considered eco-friendly energy solutions?",
-                                "What is the purpose of establishing national parks?"
+                            new[] {
+                                Tuple.Create("Plastic recycling is vital for protecting marine ecosystems.", "True/False"),
+                                Tuple.Create("Which renewable energy source harnesses power from wind?", "Multiple Choice"),
+                                Tuple.Create("Human activities are a major driver of global climate change.", "True/False"),
+                                Tuple.Create("What is the significance of preserving endangered wildlife species?", "Fill in the blank"),
+                                Tuple.Create("Trees contribute to reducing atmospheric carbon dioxide.", "True/False"),
+                                Tuple.Create("What does sustainable development mean for future generations?", "Fill in the blank"),
+                                Tuple.Create("Which practice helps conserve water resources at home?", "Multiple Choice"),
+                                Tuple.Create("Deforestation has a positive impact on natural animal habitats.", "True/False"),
+                                Tuple.Create("Solar panels are considered eco-friendly energy solutions.", "True/False"),
+                                Tuple.Create("What is the purpose of establishing national parks?", "Fill in the blank")
                             },
                             // 8. Grammar and Vocabulary Fundamentals
-                            new string[] {
-                                "What is the grammatical function of an adjective in a sentence?",
-                                "Choose the correct past tense of the irregular verb 'run'.",
-                                "What defines a complex sentence in English grammar?",
-                                "How do you correctly use punctuation in direct quotations?",
-                                "What is a synonym for the word 'abundant'?",
-                                "What is the difference between active and passive voice?",
-                                "Which part of speech expresses an action or state of being?",
-                                "What is an antonym for the word 'transparent'?",
-                                "How do compound words form in English vocabulary?",
-                                "What is the purpose of using transitional words in essays?"
+                            new[] {
+                                Tuple.Create("What is the grammatical function of an adjective in a sentence?", "Fill in the blank"),
+                                Tuple.Create("Choose the correct past tense of the irregular verb 'run'.", "Multiple Choice"),
+                                Tuple.Create("A complex sentence consists of an independent clause and at least one dependent clause.", "True/False"),
+                                Tuple.Create("How do you correctly use punctuation in direct quotations?", "Fill in the blank"),
+                                Tuple.Create("What is a synonym for the word 'abundant'?", "Multiple Choice"),
+                                Tuple.Create("Active voice emphasizes the receiver of the action rather than the doer.", "True/False"),
+                                Tuple.Create("Which part of speech expresses an action or state of being?", "Multiple Choice"),
+                                Tuple.Create("What is an antonym for the word 'transparent'?", "Multiple Choice"),
+                                Tuple.Create("Compound words form by combining two or more separate words.", "True/False"),
+                                Tuple.Create("What is the purpose of using transitional words in essays?", "Fill in the blank")
                             }
                         };
 
                         for (int tIndex = 0; tIndex < topics.Count; tIndex++)
                         {
                             int currentTopicId = topics[tIndex].Id;
-                            string[] questionsForThisTopic = topicQuestionPools[tIndex];
+                            var questionsForThisTopic = topicQuestionPools[tIndex];
 
-                            foreach (string qContent in questionsForThisTopic)
+                            foreach (var item in questionsForThisTopic)
                             {
                                 sampleQuestions.Add(new Question
                                 {
-                                    Content = qContent,
+                                    Content = item.Item1,
                                     Topicid = currentTopicId,
-                                    Questiontype = types[random.Next(types.Length)],
+                                    Questiontype = item.Item2, // Gán loại câu hỏi chuẩn xác theo từng câu
                                     Difficulty = random.Next(1, 4),
                                     Createdat = DateTime.Now
                                 });
@@ -229,6 +231,54 @@ namespace OEL_PMUD
                         }
 
                         db.Questions.AddRange(sampleQuestions);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Bỏ qua lỗi ngầm nếu có
+            }
+        }
+
+        private void SeedOptionsIfEmpty()
+        {
+            try
+            {
+                using (var db = new Appdbcontext())
+                {
+                    // Nếu bảng Options đang trống và đã có Câu hỏi trong database
+                    if (!db.Options.Any() && db.Questions.Any())
+                    {
+                        var questions = db.Questions.ToList();
+                        var sampleOptions = new List<Option>();
+
+                        foreach (var q in questions)
+                        {
+                            string qType = q.Questiontype?.Trim().ToLower() ?? "";
+
+                            if (qType.Contains("true") || qType.Contains("false"))
+                            {
+                                // Dạng Đúng/Sai: Tạo 2 đáp án True / False
+                                sampleOptions.Add(new Option { Optiontext = "True", Iscorrect = true, Questionid = q.Id });
+                                sampleOptions.Add(new Option { Optiontext = "False", Iscorrect = false, Questionid = q.Id });
+                            }
+                            else if (qType.Contains("fill") || qType.Contains("blank") || qType.Contains("short"))
+                            {
+                                // Dạng điền từ / viết câu: Tạo 1 đáp án mẫu chính xác để so khớp
+                                sampleOptions.Add(new Option { Optiontext = "Sample Answer", Iscorrect = true, Questionid = q.Id });
+                            }
+                            else
+                            {
+                                // Mặc định Trắc nghiệm (Multiple Choice): Tạo 4 lựa chọn A, B, C, D (A đúng)
+                                sampleOptions.Add(new Option { Optiontext = "A. Correct choice", Iscorrect = true, Questionid = q.Id });
+                                sampleOptions.Add(new Option { Optiontext = "B. Incorrect choice", Iscorrect = false, Questionid = q.Id });
+                                sampleOptions.Add(new Option { Optiontext = "C. Incorrect choice", Iscorrect = false, Questionid = q.Id });
+                                sampleOptions.Add(new Option { Optiontext = "D. Incorrect choice", Iscorrect = false, Questionid = q.Id });
+                            }
+                        }
+
+                        db.Options.AddRange(sampleOptions);
                         db.SaveChanges();
                     }
                 }
@@ -447,7 +497,7 @@ namespace OEL_PMUD
 
         private void btnBack_Click(object sender, EventArgs e)
         {
-            this.Close(); 
+            this.Close();
         }
     }
 }
