@@ -239,7 +239,7 @@
             Controls.Add(lblTopic);
             Controls.Add(cbTopic);
             Name = "FormQuestion";
-            Text = "FormQuestion";
+            Text = "Manage Question";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();

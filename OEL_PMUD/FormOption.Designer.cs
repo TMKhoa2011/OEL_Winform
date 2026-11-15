@@ -171,7 +171,7 @@
             Controls.Add(cbSelectquestion);
             Controls.Add(lblSelectquestion);
             Name = "FormOption";
-            Text = "FormOption";
+            Text = "Manage Option";
             ((System.ComponentModel.ISupportInitialize)dgvOptions).EndInit();
             ResumeLayout(false);
             PerformLayout();
