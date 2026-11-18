@@ -12,7 +12,8 @@ namespace OEL_PMUD
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             //Application.Run(new Form1());
-            Application.Run(new FormQuiz());
+            //Application.Run(new FormQuiz());
+            Application.Run(new FormLogin());
         }
     }
 }
