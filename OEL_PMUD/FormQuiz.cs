@@ -1,10 +1,10 @@
-﻿using OEL_PMUD.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using OEL_PMUD.Models;
 using OEL_PMUD.Models.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.EntityFrameworkCore;
 
 namespace OEL_PMUD
 {
@@ -14,11 +14,18 @@ namespace OEL_PMUD
         private int _currentIndex = 0;
         private Dictionary<int, string> _studentAnswers = new Dictionary<int, string>();
         private System.Windows.Forms.Timer _quizTimer;
-        private int _timeLeftSeconds = 3600; // 60 phút làm bài
+        private const int TotalExamSeconds = 3600; // 60 phút làm bài
+        private int _timeLeftSeconds = TotalExamSeconds;
 
         public FormQuiz()
         {
             InitializeComponent();
+
+            // Hiển thị tên thí sinh đang đăng nhập nếu có Session
+            if (Session.CurrentUser != null)
+            {
+                this.Text = $"Online Exam - Candidate: {Session.CurrentUser.Fullname}";
+            }
 
             // Dời vị trí lblTime sang bên phải ComboBox để không bị đè nhau
             lblTime.Location = new System.Drawing.Point(220, 23);
@@ -31,6 +38,7 @@ namespace OEL_PMUD
             btnPrevious.Click += btnPrevious_Click;
             btnNext.Click += btnNext_Click;
             btnSubmitexam.Click += btnSubmitexam_Click;
+            this.FormClosing += FormQuiz_FormClosing;
 
             // Khóa nút khi chưa bắt đầu thi
             btnNext.Enabled = false;
@@ -48,7 +56,7 @@ namespace OEL_PMUD
                     cbSelecttopicc.DataSource = topics;
                     cbSelecttopicc.DisplayMember = "Name";
                     cbSelecttopicc.ValueMember = "Id";
-                    cbSelecttopicc.SelectedIndex = -1; // Không chọn mặc định dòng nào lúc đầu
+                    cbSelecttopicc.SelectedIndex = -1;
                 }
             }
             catch (Exception ex)
@@ -91,7 +99,8 @@ namespace OEL_PMUD
 
                 _currentIndex = 0;
                 _studentAnswers.Clear();
-                _timeLeftSeconds = 3600;
+                _timeLeftSeconds = TotalExamSeconds;
+                UpdateTimerLabel();
                 _quizTimer.Start();
 
                 cbSelecttopicc.Enabled = false;
@@ -151,8 +160,19 @@ namespace OEL_PMUD
             }
             else
             {
-                var lblHint = new Label { Text = "Type your answer below:", Location = new System.Drawing.Point(20, 15), AutoSize = true, Font = new System.Drawing.Font("Segoe UI", 10F) };
-                var txtAnswer = new TextBox { Location = new System.Drawing.Point(20, 45), Width = 450, Font = new System.Drawing.Font("Segoe UI", 10F) };
+                var lblHint = new Label
+                {
+                    Text = "Type your answer below:",
+                    Location = new System.Drawing.Point(20, 15),
+                    AutoSize = true,
+                    Font = new System.Drawing.Font("Segoe UI", 10F)
+                };
+                var txtAnswer = new TextBox
+                {
+                    Location = new System.Drawing.Point(20, 45),
+                    Width = 450,
+                    Font = new System.Drawing.Font("Segoe UI", 10F)
+                };
 
                 if (_studentAnswers.ContainsKey(q.Id))
                 {
@@ -190,14 +210,19 @@ namespace OEL_PMUD
             }
         }
 
+        private void UpdateTimerLabel()
+        {
+            int minutes = _timeLeftSeconds / 60;
+            int seconds = _timeLeftSeconds % 60;
+            lblTime.Text = $"Time Left: {minutes:D2}:{seconds:D2}";
+        }
+
         private void QuizTimer_Tick(object sender, EventArgs e)
         {
             if (_timeLeftSeconds > 0)
             {
                 _timeLeftSeconds--;
-                int minutes = _timeLeftSeconds / 60;
-                int seconds = _timeLeftSeconds % 60;
-                lblTime.Text = $"Time Left: {minutes:D2}:{seconds:D2}";
+                UpdateTimerLabel();
             }
             else
             {
@@ -221,7 +246,8 @@ namespace OEL_PMUD
         {
             int totalScore = 0;
             int maxScore = _questions.Count;
-            int timeSpent = 3600 - _timeLeftSeconds;
+            int timeSpent = TotalExamSeconds - _timeLeftSeconds;
+            string currentStudentId = Session.CurrentUser?.Id.ToString() ?? "GuestStudent";
 
             try
             {
@@ -252,7 +278,7 @@ namespace OEL_PMUD
 
                     var resultRecord = new StudentResult
                     {
-                        Studentid = "GuestStudent",
+                        Studentid = currentStudentId,
                         Examid = defaultExamId,
                         Score = totalScore,
                         Totalcorrect = totalScore,
@@ -264,13 +290,24 @@ namespace OEL_PMUD
                     db.SaveChanges();
                 }
 
-                MessageBox.Show($"Exam Submitted Successfully!\nYour Score: {totalScore} / {maxScore}", "Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Exam Submitted Successfully!\nCandidate: {Session.CurrentUser?.Fullname ?? "Guest"}\nYour Score: {totalScore} / {maxScore}", "Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error submitting exam: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void FormQuiz_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _quizTimer?.Stop();
+        }
+
+        private void btnViewResults_Click(object sender, EventArgs e)
+        {
+            FormResult frmResult = new FormResult();
+            frmResult.ShowDialog();
         }
     }
 }

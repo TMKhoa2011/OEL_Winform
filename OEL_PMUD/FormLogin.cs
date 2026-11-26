@@ -20,7 +20,7 @@ namespace OEL_PMUD
 
             if (string.IsNullOrEmpty(account) || string.IsNullOrEmpty(password))
             {
-                MessageBox.Show("Vui lòng nhập đầy đủ tài khoản và mật khẩu!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please enter both email/phone and password!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -33,8 +33,11 @@ namespace OEL_PMUD
 
                     if (user != null)
                     {
-                        MessageBox.Show($"Login Success {user.Fullname}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Session.CurrentUser = user;
+
+                        MessageBox.Show($"Login successful! Welcome, {user.Fullname}", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         this.Hide();
+                        txtPassword.Clear();
 
                         string role = user.Role?.Trim().ToLower() ?? "";
                         if (role == "admin" || role == "teacher")
@@ -48,11 +51,13 @@ namespace OEL_PMUD
                             frmQuiz.ShowDialog();
                         }
 
-                        this.Close();
+                        Session.CurrentUser = null;
+                        this.Show();
+                        txtUsername.Focus();
                     }
                     else
                     {
-                        MessageBox.Show("Sai tài khoản hoặc mật khẩu!", "Lỗi đăng nhập", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Invalid account or password!", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         txtPassword.Clear();
                         txtPassword.Focus();
                     }
@@ -60,7 +65,7 @@ namespace OEL_PMUD
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi kết nối cơ sở dữ liệu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Database connection error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

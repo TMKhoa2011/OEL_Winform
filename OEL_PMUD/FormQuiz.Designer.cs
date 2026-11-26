@@ -37,6 +37,7 @@
             btnNext = new Button();
             btnSubmitexam = new Button();
             cbSelecttopicc = new ComboBox();
+            btnMyresults = new Button();
             SuspendLayout();
             // 
             // btnStartquiz
@@ -127,11 +128,23 @@
             cbSelecttopicc.Size = new Size(373, 31);
             cbSelecttopicc.TabIndex = 9;
             // 
+            // btnMyresults
+            // 
+            btnMyresults.Font = new Font("Segoe UI", 10F);
+            btnMyresults.Location = new Point(600, 65);
+            btnMyresults.Name = "btnMyresults";
+            btnMyresults.Size = new Size(135, 47);
+            btnMyresults.TabIndex = 10;
+            btnMyresults.Text = "My Results";
+            btnMyresults.UseVisualStyleBackColor = true;
+            
+            // 
             // FormQuiz
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(901, 494);
+            Controls.Add(btnMyresults);
             Controls.Add(cbSelecttopicc);
             Controls.Add(btnSubmitexam);
             Controls.Add(btnNext);
@@ -157,5 +170,6 @@
         private Button btnNext;
         private Button btnSubmitexam;
         private ComboBox cbSelecttopicc;
+        private Button btnMyresults;
     }
 }
