@@ -68,7 +68,7 @@
             dgvOptions.Location = new Point(14, 171);
             dgvOptions.Name = "dgvOptions";
             dgvOptions.RowHeadersWidth = 51;
-            dgvOptions.Size = new Size(716, 334);
+            dgvOptions.Size = new Size(750, 334);
             dgvOptions.TabIndex = 2;
             dgvOptions.CellClick += dgvOptions_CellClick;
             // 
@@ -114,7 +114,7 @@
             // btnDelete
             // 
             btnDelete.Font = new Font("Segoe UI", 10F);
-            btnDelete.Location = new Point(770, 266);
+            btnDelete.Location = new Point(770, 329);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(111, 43);
             btnDelete.TabIndex = 7;
@@ -125,7 +125,7 @@
             // btnUpdate
             // 
             btnUpdate.Font = new Font("Segoe UI", 10F);
-            btnUpdate.Location = new Point(770, 218);
+            btnUpdate.Location = new Point(770, 250);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(111, 42);
             btnUpdate.TabIndex = 8;
@@ -135,7 +135,8 @@
             // 
             // btnClear
             // 
-            btnClear.Location = new Point(770, 315);
+            btnClear.Font = new Font("Segoe UI", 10F);
+            btnClear.Location = new Point(770, 404);
             btnClear.Name = "btnClear";
             btnClear.Size = new Size(111, 42);
             btnClear.TabIndex = 9;

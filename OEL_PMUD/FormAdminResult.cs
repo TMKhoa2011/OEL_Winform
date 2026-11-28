@@ -489,5 +489,10 @@ namespace OEL_PMUD
             public double BestScore { get; set; }
             public double WorstScore { get; set; }
         }
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

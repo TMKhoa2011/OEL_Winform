@@ -40,6 +40,7 @@
             txtSearch = new TextBox();
             btnClear = new Button();
             btnManagequestions = new Button();
+            btnAdminresult = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -49,7 +50,7 @@
             dataGridView1.Location = new Point(12, 150);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(868, 336);
+            dataGridView1.Size = new Size(868, 353);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellClick += dataGridView1_CellClick;
             // 
@@ -96,7 +97,7 @@
             btnAdd.Font = new Font("Segoe UI", 12F);
             btnAdd.Location = new Point(12, 509);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(118, 52);
+            btnAdd.Size = new Size(102, 52);
             btnAdd.TabIndex = 5;
             btnAdd.Text = "Add";
             btnAdd.UseVisualStyleBackColor = true;
@@ -105,9 +106,9 @@
             // btnDelete
             // 
             btnDelete.Font = new Font("Segoe UI", 12F);
-            btnDelete.Location = new Point(154, 509);
+            btnDelete.Location = new Point(120, 509);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(122, 52);
+            btnDelete.Size = new Size(104, 52);
             btnDelete.TabIndex = 6;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = true;
@@ -116,9 +117,9 @@
             // btnUpdate
             // 
             btnUpdate.Font = new Font("Segoe UI", 12F);
-            btnUpdate.Location = new Point(303, 509);
+            btnUpdate.Location = new Point(230, 509);
             btnUpdate.Name = "btnUpdate";
-            btnUpdate.Size = new Size(117, 52);
+            btnUpdate.Size = new Size(105, 52);
             btnUpdate.TabIndex = 7;
             btnUpdate.Text = "Update";
             btnUpdate.UseVisualStyleBackColor = true;
@@ -146,9 +147,9 @@
             // btnClear
             // 
             btnClear.Font = new Font("Segoe UI", 12F);
-            btnClear.Location = new Point(448, 509);
+            btnClear.Location = new Point(341, 509);
             btnClear.Name = "btnClear";
-            btnClear.Size = new Size(125, 52);
+            btnClear.Size = new Size(105, 52);
             btnClear.TabIndex = 10;
             btnClear.Text = "Clear";
             btnClear.UseVisualStyleBackColor = true;
@@ -157,19 +158,31 @@
             // btnManagequestions
             // 
             btnManagequestions.Font = new Font("Segoe UI", 12F);
-            btnManagequestions.Location = new Point(656, 509);
+            btnManagequestions.Location = new Point(507, 509);
             btnManagequestions.Name = "btnManagequestions";
-            btnManagequestions.Size = new Size(224, 52);
+            btnManagequestions.Size = new Size(187, 52);
             btnManagequestions.TabIndex = 11;
             btnManagequestions.Text = "Manage Questions";
             btnManagequestions.UseVisualStyleBackColor = true;
             btnManagequestions.Click += btnManagequestions_Click;
+            // 
+            // btnAdminresult
+            // 
+            btnAdminresult.Font = new Font("Segoe UI", 12F);
+            btnAdminresult.Location = new Point(700, 511);
+            btnAdminresult.Name = "btnAdminresult";
+            btnAdminresult.Size = new Size(180, 50);
+            btnAdminresult.TabIndex = 12;
+            btnAdminresult.Text = "Statistics";
+            btnAdminresult.UseVisualStyleBackColor = true;
+            btnAdminresult.Click += btnAdminResult_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 19F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(892, 584);
+            Controls.Add(btnAdminresult);
             Controls.Add(btnManagequestions);
             Controls.Add(btnClear);
             Controls.Add(txtSearch);
@@ -205,5 +218,6 @@
         private TextBox txtSearch;
         private Button btnClear;
         private Button btnManagequestions;
+        private Button btnAdminresult;
     }
 }

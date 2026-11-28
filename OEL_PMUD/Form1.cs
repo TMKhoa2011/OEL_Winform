@@ -340,7 +340,19 @@ namespace OEL_PMUD
         private void btnManagequestions_Click(object sender, EventArgs e)
         {
             FormQuestion fq = new FormQuestion();
-            fq.Show(); 
+            fq.Show();
         }
+
+        private void btnAdminResult_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            using (var frm = new FormAdminResult())
+            {
+                frm.ShowDialog();
+            }
+            this.Show();
+        }
+
+        
     }
 }

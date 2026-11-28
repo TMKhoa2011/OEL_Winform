@@ -49,6 +49,7 @@
             txtSearchstudent = new TextBox();
             dgvStudenthistory = new DataGridView();
             dgvStudents = new DataGridView();
+            btnBack = new Button();
             gbTop.SuspendLayout();
             tabControl1.SuspendLayout();
             tabOverview.SuspendLayout();
@@ -61,6 +62,7 @@
             // 
             // gbTop
             // 
+            gbTop.Controls.Add(btnBack);
             gbTop.Controls.Add(lblKpipassrate);
             gbTop.Controls.Add(lblKpiavgscore);
             gbTop.Controls.Add(lblKpiattempts);
@@ -271,6 +273,16 @@
             dgvStudents.Size = new Size(615, 307);
             dgvStudents.TabIndex = 0;
             // 
+            // btnBack
+            // 
+            btnBack.Location = new Point(0, 38);
+            btnBack.Name = "btnBack";
+            btnBack.Size = new Size(94, 32);
+            btnBack.TabIndex = 6;
+            btnBack.Text = "Back";
+            btnBack.UseVisualStyleBackColor = true;
+            btnBack.Click += btnBack_Click;
+            // 
             // FormAdminResult
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -317,5 +329,6 @@
         private Label lblStudentavg;
         private Label lblStudentattempts;
         private Label lblStudentname;
+        private Button btnBack;
     }
 }

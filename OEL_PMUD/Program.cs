@@ -13,9 +13,9 @@ namespace OEL_PMUD
             ApplicationConfiguration.Initialize();
             //Application.Run(new Form1());
             //Application.Run(new FormQuiz());
-            //Application.Run(new FormLogin());
+            Application.Run(new FormLogin());
             //Application.Run(new FormResult());
-            Application.Run(new FormAdminResult());
+            //Application.Run(new FormAdminResult());
         }
     }
 }
